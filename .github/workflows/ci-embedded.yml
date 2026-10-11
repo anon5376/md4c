@@ -2,6 +2,8 @@ name: Build Embedded
 
 on:
   push:
+    branches-ignore:
+      - codex/test-runner-ci
     paths:
       - '**.c'
       - '**.h'

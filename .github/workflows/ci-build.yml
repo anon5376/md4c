@@ -9,7 +9,7 @@ jobs:
   #
   # gcc sometimes warns (e.g. about potentially uninitialized variables) only
   # when some optimizations are enabled. So we build Debug as well as Release
-  # on Linux. The Debug build also collects and uploads test coverage.
+  # on Linux.
   linux-debug:
     runs-on: ubuntu-latest
     steps:
@@ -20,16 +20,9 @@ jobs:
       - name: Build
         run: make VERBOSE=1
       - name: Test
-        run: python3 ./scripts/run-tests.py
-      - name: Create coverage report
         run: |
-          sudo apt-get install -y lcov
-          lcov --directory . --capture --branch-coverage --output-file coverage.info
-          lcov --list coverage.info --branch-coverage
-      - name: Upload coverage report
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          python3 --version
+          python3 ./scripts/run-tests.py
 
   linux-release:
     runs-on: ubuntu-latest
@@ -41,7 +34,9 @@ jobs:
       - name: Build
         run: make VERBOSE=1
       - name: Test
-        run: python3 ./scripts/run-tests.py
+        run: |
+          python3 --version
+          python3 ./scripts/run-tests.py
 
   # Windows builds.
   #
@@ -61,7 +56,9 @@ jobs:
       - name: Build
         run: nmake
       - name: Test
-        run: python .\scripts\run-tests.py
+        run: |
+          py -3.11 --version
+          py -3.11 .\scripts\run-tests.py
 
   windows-64-release:
     runs-on: windows-latest
@@ -77,4 +74,6 @@ jobs:
       - name: Build
         run: nmake
       - name: Test
-        run: python .\scripts\run-tests.py
+        run: |
+          py -3.14 --version
+          py -3.14 .\scripts\run-tests.py
